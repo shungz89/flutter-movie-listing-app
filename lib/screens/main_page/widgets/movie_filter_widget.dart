@@ -17,7 +17,9 @@ class MovieFilterWidget extends StatelessWidget {
       items: genreList.map((Genre genre) {
         return DropdownMenuItem<Genre>(
           value: genre,
-          child: Text(genre.name),
+          child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8,),
+              child: Text(genre.name)),
         );
       }).toList(),
     );

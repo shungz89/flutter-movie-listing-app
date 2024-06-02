@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_movie_listing_app/api/api.dart';
 import 'package:get/get.dart';
+import '../constants/colors.dart';
 import '../models/result/get_movie_result.dart';
 import '../models/sub_object.dart';
 
@@ -76,11 +77,37 @@ class _UserItemWidgetState extends State<UserItemWidget>
                 Text(
                   widget.movieItem.overview ?? "",
                   style: TextStyle(
-                    color: Colors.grey,
+                    color: AppColors.darkGreyDark,
                     fontSize: 14,
                   ),
                   maxLines: 4,
                   overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(
+                  height: 4,
+                ),
+                Row(children: [
+                  Text(
+                    "Release Date:",
+                    style: TextStyle(
+                      color: AppColors.darkGrey,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    formatDate("${widget.movieItem.releaseDate ?? "-"}"),
+                    style: TextStyle(
+                      color: AppColors.darkGrey,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],),
+                SizedBox(
+                  height: 8,
                 ),
               ],
             )),
@@ -91,6 +118,11 @@ class _UserItemWidgetState extends State<UserItemWidget>
         ),
       ),
     );
+  }
+
+  String formatDate(String dateString) {
+    DateTime dateTime = DateTime.parse(dateString);
+    return '${dateTime.day.toString().padLeft(2, '0')}/${dateTime.month.toString().padLeft(2, '0')}/${dateTime.year}';
   }
 
   @override
