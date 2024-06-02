@@ -3,5 +3,6 @@ class AppRoutes {
   static const String MAINPAGE = '/main';
 
   static const String DETAILS = '/details';
+  static const String VIDEO_DETAILS = '/video_details';
 
 }

@@ -8,4 +8,12 @@ class ApiProvider extends BaseProvider {
       String path, GetMovieListRequest data) {
     return getWrapper(path, query: data.toJson());
   }
+
+  Future<Response> getMovieDetails(String path) {
+    return getWrapper(path);
+  }
+
+  Future<Response> getMovieVideos(String path) {
+    return getWrapper(path);
+  }
 }

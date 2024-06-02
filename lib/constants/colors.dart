@@ -26,6 +26,7 @@ class AppColors {
 
   static const Color calendarDisabledColor = Color(0xFF4F4F4F);
   static const Color transparentWhite50 = Color(0x32FFFFFF);
+  static const Color transparentWhite80 = Color(0xCCFFFFFF);
   static const Color transparentBlack80 = Color(0xCC000000);
   static const Color transparentBlack50 = Color(0x80000000);
   static const Color transparentBlack60 = Color(0x99000000);

@@ -43,6 +43,7 @@ dependencies:
   intl: ^0.18.1
   colorful_safe_area: ^1.0.0
   autocomplete_textfield: ^2.0.1
+  youtube_player_flutter: ^9.0.1
 
 dev_dependencies:
   flutter_test:

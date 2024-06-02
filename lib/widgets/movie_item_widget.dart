@@ -41,6 +41,11 @@ class _UserItemWidgetState extends State<UserItemWidget>
                   width: Get.width / 4,
                   fit: BoxFit.cover,
                   height: 112,
+                  placeholder: (context, url) => Container(
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
                   errorWidget: (context, url, error) => Container(
                     child: Icon(
                       Icons.error,
