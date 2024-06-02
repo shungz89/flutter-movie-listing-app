@@ -44,6 +44,7 @@ dependencies:
   colorful_safe_area: ^1.0.0
   autocomplete_textfield: ^2.0.1
   youtube_player_flutter: ^9.0.1
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:

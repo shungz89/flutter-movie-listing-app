@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:flutter_movie_listing_app/models/result/get_movie_details_result.dart';
+import 'package:flutter_movie_listing_app/models/result/get_movie_images_result.dart';
 
 import '../models/base_response.dart';
 import '../models/request/get_movie_list_request.dart';
@@ -43,7 +43,7 @@ class ApiRepository {
     }
   }
 
-  Future<BaseResponse<List<GetMovieTrailerVideosResult?>>?> getMovieVideos(
+  Future<BaseResponse<List<GetMovieVideosResult?>>?> getMovieVideos(
       String movieId) async {
     try {
       final res = await apiProvider.getMovieVideos('movie/${movieId}/videos');
@@ -51,9 +51,21 @@ class ApiRepository {
         return BaseResponse.fromJson(
             res.body,
             (json) => (json as List<dynamic>)
-                .map((e) => GetMovieTrailerVideosResult.fromJson(
-                    e as Map<String, dynamic>))
+                .map((e) =>
+                    GetMovieVideosResult.fromJson(e as Map<String, dynamic>))
                 .toList());
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<GetMovieImagesResult?> getMovieImages(String movieId) async {
+    try {
+      final res = await apiProvider.getMovieVideos('movie/${movieId}/images');
+      if (res.statusCode == 200) {
+        print("/images ${res.body.toString()}");
+        return GetMovieImagesResult.fromJson(res.body);
       }
     } catch (e) {
       print(e.toString());

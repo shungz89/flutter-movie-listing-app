@@ -1,19 +1,11 @@
 import 'dart:async';
-import 'dart:io';
-
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../api/api_repository.dart';
-import '../../constants/enums.dart';
-import '../../models/request/get_movie_list_request.dart';
+import '../../models/backdrop.dart';
 import '../../models/result/get_movie_details_result.dart';
-import '../../models/result/get_movie_result.dart';
 
 class DetailsPageController extends GetxController
     with GetTickerProviderStateMixin {
@@ -26,6 +18,8 @@ class DetailsPageController extends GetxController
   Rx<GetMovieDetailsResult> movieDetails = GetMovieDetailsResult().obs;
   YoutubePlayerController? youtubeController;
 
+  RxList<Backdrop> backdropList = <Backdrop>[].obs;
+
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -35,6 +29,7 @@ class DetailsPageController extends GetxController
         Get.arguments['movie_id'].isNotEmpty) {
       movieId.value = Get.arguments['movie_id'];
       print("movieId is ${movieId.value}");
+      await getMovieImages();
       await getMovieDetails();
       youtubeController = YoutubePlayerController(
         initialVideoId: "${movieLink.value}",
@@ -72,11 +67,19 @@ class DetailsPageController extends GetxController
       youtubeController = YoutubePlayerController(
         initialVideoId: "${movieLink.value}",
         flags: YoutubePlayerFlags(
-          autoPlay: false,
-          mute: false,
-          hideControls: true
-        ),
+            autoPlay: false, mute: false, hideControls: true),
       );
+    }
+  }
+
+  Future<void> getMovieImages() async {
+    if (movieId.value == '-1') {
+      return;
+    }
+    final res = await apiRepository.getMovieImages(movieId.value);
+    if (res != null && res.backdrops != null && res.backdrops!.isNotEmpty) {
+      backdropList.value = res.backdrops ?? [];
+      print("backdropList is ${backdropList.length}");
     }
   }
 

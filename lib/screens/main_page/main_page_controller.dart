@@ -82,9 +82,18 @@ class MainPageController extends GetxController
         includeAdult: "false",
         language: 'en-US',
         page: "1",
-        sortBy: 'primary_release_date.desc'));
+        sortBy: 'popularity.desc'));
     print("Result is ${movieListFromApi?.results}");
     if (movieListFromApi != null && movieListFromApi.results != null) {
+      movieListFromApi.results!.sort((a, b) {
+        // Parse releaseDate strings into DateTime objects
+        DateTime aDate = DateTime.parse(a?.releaseDate ?? '');
+        DateTime bDate = DateTime.parse(b?.releaseDate ?? '');
+
+        // Compare DateTime objects
+        return bDate.compareTo(aDate);
+      });
+
       mainMovieList.value = movieListFromApi.results!;
       mainMovieList.refresh();
       initGenreList();

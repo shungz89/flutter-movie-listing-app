@@ -1,4 +1,4 @@
-class GetMovieTrailerVideosResult {
+class GetMovieVideosResult {
   String? iso6391;
   String? iso31661;
   String? name;
@@ -10,7 +10,7 @@ class GetMovieTrailerVideosResult {
   String? publishedAt;
   String? id;
 
-  GetMovieTrailerVideosResult({
+  GetMovieVideosResult({
     this.iso6391,
     this.iso31661,
     this.name,
@@ -23,7 +23,7 @@ class GetMovieTrailerVideosResult {
     this.id,
   });
 
-  factory GetMovieTrailerVideosResult.fromJson(Map<String, dynamic> json) => GetMovieTrailerVideosResult(
+  factory GetMovieVideosResult.fromJson(Map<String, dynamic> json) => GetMovieVideosResult(
     iso6391: json['iso_639_1'] as String?,
     iso31661: json['iso_3166_1'] as String?,
     name: json['name'] as String?,
