@@ -14,7 +14,7 @@ class ApiRepository {
   Future<BaseResponse<List<GetMovieResult?>>?> getMovieList(
       GetMovieListRequest data) async {
     try {
-      final res = await apiProvider.getUserList('discover/movie', data);
+      final res = await apiProvider.getMovieList('discover/movie', data);
       //Convert res to a json object
       print("res is ${res}");
       if (res.statusCode == 200) {

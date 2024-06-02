@@ -32,12 +32,23 @@ class _UserItemWidgetState extends State<UserItemWidget>
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: CachedNetworkImage(
+              child: Container(
+                color: Colors.black,
+                child: CachedNetworkImage(
                   imageUrl: ApiConstants.imgUrl +
                       "" +
                       (widget.movieItem.posterPath ?? ""),
                   width: Get.width / 4,
-                  height: 112),
+                  fit: BoxFit.cover,
+                  height: 112,
+                  errorWidget: (context, url, error) => Container(
+                    child: Icon(
+                      Icons.error,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
             ),
             SizedBox(
               width: 8,

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -25,7 +27,12 @@ class MainPageController extends GetxController
   RxList<GetMovieResult?> filteredMovieList = <GetMovieResult?>[].obs;
 
   final ApiRepository apiRepository;
-  RxString sysLang = ''.obs;
+  RxString searchString = ''.obs;
+  RxList<String> searchHistoryList = <String>[].obs;
+  TextEditingController textEditingController = TextEditingController();
+  FocusNode focusNode = FocusNode();
+
+  GlobalKey autoCompleteKey = GlobalKey();
 
   MainPageController({required this.apiRepository});
 
@@ -70,51 +77,67 @@ class MainPageController extends GetxController
   }
 
   Future<void> initializeMovieList() async {
-    var userListFromApi = await apiRepository.getMovieList(GetMovieListRequest(
+    var movieListFromApi = await apiRepository.getMovieList(GetMovieListRequest(
         includeAdult: "false",
         language: 'en-US',
         page: "1",
-        sortBy: 'popularity.desc'));
-    print("Result is ${userListFromApi?.results}");
-    if (userListFromApi != null && userListFromApi.results != null) {
-      mainMovieList.value = userListFromApi.results!;
+        sortBy: 'primary_release_date.desc'));
+    print("Result is ${movieListFromApi?.results}");
+    if (movieListFromApi != null && movieListFromApi.results != null) {
+      mainMovieList.value = movieListFromApi.results!;
     }
     filteredMovieList.value = List.from(mainMovieList);
     filteredMovieList.refresh();
   }
 
   Future<void> getMovieList() async {
-    var userListFromApi = await apiRepository.getMovieList(GetMovieListRequest(
-        includeAdult: "false",
-        language: 'en-US',
-        page: "1",
-        sortBy: 'popularity.desc'));
-    print("Result is ${userListFromApi?.results}");
-    if (userListFromApi != null && userListFromApi.results != null) {
-      filteredMovieList.value = userListFromApi.results ?? [];
+    if (selectedGenre.value == Genre.All) {
+      applyGenreAndSearchFilter(mainMovieList);
+    } else {
+      List<GetMovieResult?> filteredByGenre = mainMovieList
+          .where((element) =>
+              element != null &&
+              element.genreIds != null &&
+              element.genreIds!.contains(selectedGenre.value.id))
+          .toList();
+      applyGenreAndSearchFilter(filteredByGenre);
     }
+  }
+
+  void applyGenreAndSearchFilter(List<GetMovieResult?> movies) {
+    if (searchString.value.isNotEmpty) {
+      filteredMovieList.value = movies
+          .where((element) =>
+              element != null &&
+              element.title != null &&
+              element.title!
+                  .toLowerCase()
+                  .contains(searchString.value.toLowerCase()))
+          .toList();
+    } else {
+      filteredMovieList.value = List.from(movies);
+    }
+    filteredMovieList.refresh();
   }
 
   void onGenreChanged(Genre? genre) {
     selectedGenre.value = genre ?? Genre.All;
-    print("Genre is ${genre?.name}");
+    getMovieList();
+  }
 
-    if (genre == Genre.All) {
-      getMovieList();
-    } else {
-      filteredMovieList.clear();
-      mainMovieList
-          .where((element) => element != null && element.genreIds != null
-              ? element.genreIds!.contains(genre?.id ?? -1)
-              : false)
-          .toList();
-      print("Main Movie List is ${mainMovieList.length}");
-      filteredMovieList.addAll(mainMovieList
-          .where((element) => element != null && element.genreIds != null
-              ? element.genreIds!.contains(genre?.id ?? -1)
-              : false)
-          .toList());
-      filteredMovieList.refresh();
+  void onSearchSubmitted(String data) {
+    searchString.value = data;
+    if (searchString.value.isNotEmpty &&
+        !searchHistoryList.contains(searchString.value)) {
+      searchHistoryList.add(data);
+      searchHistoryList.refresh();
     }
+
+    onSearchBarTextChange(searchString.value);
+  }
+
+  void onSearchBarTextChange(String text) {
+    searchString.value = text;
+    getMovieList();
   }
 }

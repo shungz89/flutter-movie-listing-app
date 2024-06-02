@@ -12,15 +12,6 @@ class AppColors {
   static const Color darkGreyDark = Color(0xFF35454D);
   static const Color darkGreyDarker = Color(0xFF212B30);
 
-  static const Color rankingColor1 = Color(0xFF5CD66C);
-  static const Color rankingColor2 = Color(0xFF2E8FEF);
-  static const Color rankingColor3 = Color(0xFFF7EB83);
-  static const Color rankingColorR = Color(0xFFCF283E);
-  static const Color rankingColor5 = Color(0xFF673AB7);
-  static const Color rankingColorP = Color(0xFFFFC0CB);
-  //Currently Not In Use
-  static const Color rankingColor4 = Color(0xFFFF9800);
-
   static const Color white = Color(0xFFFFFFFF);
   static const Color orange = Color(0xFFED9C5A);
   static const Color blue = Color(0xFF2E8FEF);

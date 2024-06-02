@@ -4,7 +4,7 @@ import 'base_provider.dart';
 
 class ApiProvider extends BaseProvider {
 
-  Future<Response> getUserList(
+  Future<Response> getMovieList(
       String path, GetMovieListRequest data) {
     return getWrapper(path, query: data.toJson());
   }
