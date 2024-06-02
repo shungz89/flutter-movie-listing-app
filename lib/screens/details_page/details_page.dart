@@ -115,6 +115,7 @@ class DetailsPage extends GetWidget<DetailsPageController> {
                               child: imageSliders.isNotEmpty
                                   ? CarouselSlider(
                                       options: CarouselOptions(
+                                        scrollPhysics: NeverScrollableScrollPhysics(),
                                         aspectRatio: 2.0,
                                         enlargeCenterPage: true,
                                         scrollDirection: Axis.vertical,
