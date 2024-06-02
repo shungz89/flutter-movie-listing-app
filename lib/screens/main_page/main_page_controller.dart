@@ -39,12 +39,13 @@ class MainPageController extends GetxController
   @override
   Future<void> onInit() async {
     super.onInit();
-    initGenreList();
     await initializeMovieList();
   }
 
   void initGenreList() {
-    genreList.addAll(Genre.values);
+    genreList.value =
+        generateGenreListFromMovieListIds(generateGenreIdList(mainMovieList.toList()));
+    genreList.refresh();
   }
 
   @override
@@ -85,9 +86,35 @@ class MainPageController extends GetxController
     print("Result is ${movieListFromApi?.results}");
     if (movieListFromApi != null && movieListFromApi.results != null) {
       mainMovieList.value = movieListFromApi.results!;
+      mainMovieList.refresh();
+      initGenreList();
     }
     filteredMovieList.value = List.from(mainMovieList);
     filteredMovieList.refresh();
+  }
+
+  List<int> generateGenreIdList(List<GetMovieResult?> movieList) {
+    final Set<int> uniqueGenreIds = {};
+
+    for (var movie in movieList) {
+      if (movie != null && movie.genreIds != null) {
+        uniqueGenreIds.addAll(movie.genreIds!);
+      }
+    }
+
+    return uniqueGenreIds.toList();
+  }
+
+  List<Genre> generateGenreListFromMovieListIds(List<int> genreIds) {
+    List<Genre> genres = [];
+    genres.add(Genre.All);
+
+    for (var genreId in genreIds) {
+      genres.add(
+          Genre.values.toList().firstWhere((element) => element.id == genreId));
+    }
+
+    return genres;
   }
 
   Future<void> getMovieList() async {

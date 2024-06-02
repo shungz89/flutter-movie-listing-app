@@ -137,7 +137,7 @@ class MainPage extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 8),
                       child: Obx(() => MovieFilterWidget(
                           selectedGenre: controller.selectedGenre.value,
-                          genreList: controller.genreList,
+                          genreList: controller.genreList.toList(),
                           onGenreChanged: controller.onGenreChanged)),
                     ),
                     Expanded(child: MovieListingWidget()),
